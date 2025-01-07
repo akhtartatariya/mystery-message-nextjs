@@ -1,21 +1,24 @@
 import ApiResponse from '@/types/ApiResponse';
 import transport from '@/lib/nodemailer';
 import VerificationEmail from '../../template/EmailTemplate';
+import { render } from '@react-email/components';
 interface emailOptions {
     from: string;
     to: string;
     subject: string;
-    html: any;
+    html: any  
 }
 async function sendEmail({ username, verifyCode, email }: any): Promise<ApiResponse> {
-
+    console.log(" Sending Email to",transport)
     try {
-
-        const emailOptions: emailOptions = {
+        
+        console.log(" in try Sending Email to",transport)
+        const emailHtml = await render(VerificationEmail({ username, otp: verifyCode }));
+        const emailOptions = {
             from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
             to: email,
             subject: "Verification Code",
-            html: VerificationEmail({ username, otp: verifyCode })
+            html: emailHtml
         }
 
         await transport.sendMail(emailOptions);
@@ -24,11 +27,11 @@ async function sendEmail({ username, verifyCode, email }: any): Promise<ApiRespo
             success: true,
             message: 'Email sent successfully'
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error(" Failed to send email to user", error);
         return {
             success: false,
-            message: 'Failed to send email'
+            message: error || "Couldn't send email"
         }
     }
 
