@@ -21,8 +21,8 @@ export interface User extends Document {
     email: string;
     password: string;
     messages: Message[];
-    verifyCode: string;
-    verifyCodeExpiresAt: Date;
+    verifyCode: string | undefined;
+    verifyCodeExpiresAt: Date | undefined ;
     isVerified: boolean;
     isAcceptingMessage: boolean;
 }

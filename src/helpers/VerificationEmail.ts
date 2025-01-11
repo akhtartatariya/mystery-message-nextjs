@@ -14,7 +14,7 @@ async function sendEmail({ username, verifyCode, email }: any): Promise<ApiRespo
         
         console.log(" in try Sending Email to",transport)
         const emailHtml = await render(VerificationEmail({ username, otp: verifyCode }));
-        const emailOptions = {
+        const emailOptions: emailOptions = {
             from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
             to: email,
             subject: "Verification Code",
