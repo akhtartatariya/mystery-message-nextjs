@@ -1,10 +1,23 @@
 import UserModel from "@/models/user.model";
 import dbConnect from "@/lib/dbConnect";
 import { Message } from "@/models/user.model";
+import { messageSchema } from "@/zodSchemas/messageSchema";
+
 export async function POST(request: Request) {
     await dbConnect()
     try {
         const { username, message } = await request.json();
+
+        const result = messageSchema.safeParse({content: message})
+
+        if (!result.success) {
+            return Response.json({
+                success: false,
+                message: result.error.errors[0].message
+            }, {
+                status: 400
+            })
+        }
         const existedUser = await UserModel.findOne({ username })
         if (!existedUser) {
             return Response.json({

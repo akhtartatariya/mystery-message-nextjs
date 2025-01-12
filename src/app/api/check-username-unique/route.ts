@@ -12,15 +12,18 @@ export async function GET(request: Request) {
     try {
 
         const { searchParams } = new URL(request.url)
+        
         const verifiedUsername = {
             username: searchParams.get("username")
         }
+        console.log(" verified username",verifiedUsername.username)
         const result = usernameSchemaObject.safeParse(verifiedUsername)
-        console.log("Verified Username :-", result.error?.format().username ?._errors.join(","))
+
+        console.log("Verified Username :-",result.data?.username )
         if (!result.success) {
             return Response.json({
                 success: false,
-                message:  result.error?.format().username ?._errors.join(" , ") || "Something went wrong while verifying username"
+                message:  result.error?.format().username ?._errors.join(" , ") || []
             }, { status: 400 })
         }
         const user = await UserModel.findOne({ username: result.data.username, isVerified: true })

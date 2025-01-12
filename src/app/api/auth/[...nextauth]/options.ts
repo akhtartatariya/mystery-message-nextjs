@@ -3,7 +3,7 @@ import { NextAuthOptions } from "next-auth"
 import bcrypt from "bcrypt"
 import dbConnect from "@/lib/dbConnect"
 import UserModel from "@/models/user.model"
-
+import { signInSchema } from "@/zodSchemas/signInSchema"
 
 export const authOption: NextAuthOptions = {
     providers: [
@@ -17,6 +17,11 @@ export const authOption: NextAuthOptions = {
             async authorize(credentials: any): Promise<any> {
                 await dbConnect()
                 try {
+                    const result = signInSchema.safeParse({identifier:credentials.email,password:credentials.password})
+
+                    if (!result.success) {
+                        throw new Error(result.error.errors[0].message)
+                    }
                     const user = await UserModel.findOne({
                         $or: [
                             { email: credentials.email },

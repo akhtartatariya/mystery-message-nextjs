@@ -3,6 +3,8 @@ import { authOption } from "../auth/[...nextauth]/options";
 import UserModel from "@/models/user.model";
 import dbConnect from "@/lib/dbConnect";
 import { User } from "next-auth";
+import { acceptMessageSchema } from "@/zodSchemas/acceptMessageSchema";
+
 export async function POST(request: Request) {
     await dbConnect()
     const session = await getServerSession(authOption)
@@ -19,6 +21,17 @@ export async function POST(request: Request) {
 
     try {
         const { acceptMessage } = await request.json()
+
+        const result=acceptMessageSchema.safeParse({acceptMessage})
+
+        if (!result.success) {
+            return Response.json({
+                success: false,
+                message: result.error.errors[0].message
+            }, {
+                status: 400
+            })
+        }
         const existedUser = await UserModel.findOne({ _id: user._id })
         if (!existedUser) {
             return Response.json({

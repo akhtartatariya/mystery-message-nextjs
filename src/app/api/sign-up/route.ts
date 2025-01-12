@@ -1,13 +1,23 @@
 import sendEmail from "@/helpers/VerificationEmail";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
+import { signUpSchema } from "@/zodSchemas/signUpSchema";
 import bcrypt from "bcrypt";
-
 export async function POST(request: Request) {
     await dbConnect()
     try {
         const { username, email, password } = await request.json()
 
+        const result = signUpSchema.safeParse({ username, email, password })
+
+        if (!result.success) {
+            return Response.json({
+                success: false,
+                message: result.error.errors[0].message
+            }, {
+                status: 400
+            })
+        }
         const existedUserByUsername = await UserModel.findOne({ username, isVerified: true })
         if (existedUserByUsername) {
             return Response.json({
