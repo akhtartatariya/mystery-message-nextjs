@@ -16,10 +16,8 @@ export async function GET(request: Request) {
         const verifiedUsername = {
             username: searchParams.get("username")
         }
-        console.log(" verified username",verifiedUsername.username)
         const result = usernameSchemaObject.safeParse(verifiedUsername)
 
-        console.log("Verified Username :-",result.data?.username )
         if (!result.success) {
             return Response.json({
                 success: false,

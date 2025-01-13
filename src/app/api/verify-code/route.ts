@@ -1,3 +1,4 @@
+'use server'
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
 import { verifyCodeSchema } from "@/zodSchemas/verifyCode";
@@ -20,8 +21,6 @@ export async function POST(request: Request) {
         const isNotExpiredCode = user.verifyCodeExpiresAt ? new Date(user.verifyCodeExpiresAt) > new Date() : false
         if (isValidCode && isNotExpiredCode) {
             user.isVerified = true
-            user.verifyCode = undefined
-            user.verifyCodeExpiresAt = undefined
             await user.save()
             return Response.json({
                 success: true,

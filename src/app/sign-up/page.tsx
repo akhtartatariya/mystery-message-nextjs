@@ -56,7 +56,8 @@ const SignUp = () => {
                 toast({
                     title: "Error",
                     description: axiosError.response?.data?.message ?? "Invalid Username ",
-                    variant: "destructive"
+                    variant: "destructive",
+                    duration: 2000
                 })
             }
             finally {

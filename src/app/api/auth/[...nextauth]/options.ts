@@ -17,17 +17,18 @@ export const authOption: NextAuthOptions = {
             async authorize(credentials: any): Promise<any> {
                 await dbConnect()
                 try {
-                    const result = signInSchema.safeParse({identifier:credentials.email,password:credentials.password})
-
+                    const result = signInSchema.safeParse({ identifier: credentials.identifier, password: credentials.password })
+                    // console.log(" credentials auth result ", result)
                     if (!result.success) {
                         throw new Error(result.error.errors[0].message)
                     }
                     const user = await UserModel.findOne({
                         $or: [
-                            { email: credentials.email },
-                            { username: credentials.email }
+                            { email: result.data.identifier },
+                            { username: result.data.identifier }
                         ]
                     })
+                    // console.log(" credentials auth user ", user)
                     if (!user) {
                         throw new Error("No user found")
                     }
