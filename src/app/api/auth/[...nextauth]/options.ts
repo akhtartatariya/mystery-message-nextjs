@@ -60,6 +60,7 @@ export const authOption: NextAuthOptions = {
             token.isVerified = user.isVerified
             token.isAcceptingMessage = user.isAcceptingMessage
             token.email = user.email
+            token.username = user.username
             return token
         },
         async session({ session, token }) {
@@ -67,6 +68,7 @@ export const authOption: NextAuthOptions = {
             session.user.isVerified = token.isVerified
             session.user.isAcceptingMessage = token.isAcceptingMessage
             session.user.email = token.email
+            session.user.username = token.username
             return session
         },
     },
