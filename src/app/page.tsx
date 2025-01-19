@@ -10,12 +10,11 @@ import ApiResponse from "@/types/ApiResponse"
 import axios, { AxiosError } from "axios"
 import { Loader2, RefreshCcw } from "lucide-react"
 import { useSession } from "next-auth/react"
-import { usePathname } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 export default function Dashboard() {
-  const { data: session } = useSession()
+  const { data: session } =  useSession()
   const [messages, setMessages] = useState<Message[]>([])
   const [isToggleLoading, setIsToggleLoading] = useState(false)
   const [isMessageLoading, setIsMessageLoading] = useState(false)
@@ -102,6 +101,9 @@ export default function Dashboard() {
         description: axiosError.response?.data?.message
       })
     }
+    finally {
+      setIsToggleLoading(false)
+    }
   }, [acceptMessage, setValue, setIsToggleLoading])
   useEffect(() => {
     if (!session || !session.user) return
@@ -109,10 +111,8 @@ export default function Dashboard() {
     getToggleStatus()
     getMessages()
   }, [getMessages, setMessages, session, setValue])
-  const pathName = usePathname()
-  console.log(" pathName ->", pathName)
-  // const baseUrl=`${window.location.protocol}//${window.location.host}`
-  const profileUrl = `${pathName}/u/${session?.user.username}`
+  const baseUrl=`${window?.location.protocol}//${window.location.host}`
+  const profileUrl = `${baseUrl}/u/${session?.user.username}`
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl)
     toast({

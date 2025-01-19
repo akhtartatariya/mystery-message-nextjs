@@ -9,8 +9,7 @@ export async function POST(request: Request) {
     await dbConnect()
     const session = await getServerSession(authOption)
     const user = session?.user as User
-
-    if (!user || !user._id) {
+    if (!user) {
         return Response.json({
             success: false,
             message: "Unauthorized"
@@ -32,7 +31,7 @@ export async function POST(request: Request) {
                 status: 400
             })
         }
-        const existedUser = await UserModel.findOne({ _id: user._id })
+        const existedUser = await UserModel.findOne({ _id: user?._id })
         if (!existedUser) {
             return Response.json({
                 success: false,
@@ -66,8 +65,8 @@ export async function GET() {
 
     const session = await getServerSession(authOption)
     const user = session?.user as User
-
-    if (!user || !user._id) {
+    console.log('user->', user)
+    if (!user) {
         return Response.json({
             success: false,
             message: "Unauthorized"
@@ -77,7 +76,7 @@ export async function GET() {
     }
 
     try {
-        const existedUser = await UserModel.findOne({ _id: user._id })
+        const existedUser = await UserModel.findOne({ _id: user?._id })
         if (!existedUser) {
             return Response.json({
                 success: false,

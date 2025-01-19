@@ -17,22 +17,21 @@ export const authOption: NextAuthOptions = {
             async authorize(credentials: any): Promise<any> {
                 await dbConnect()
                 try {
+                    // console.log(" credentials ->", credentials)
                     const result = signInSchema.safeParse({ identifier: credentials.identifier, password: credentials.password })
-                    // console.log(" credentials auth result ", result)
                     if (!result.success) {
                         throw new Error(result.error.errors[0].message)
                     }
+
                     const user = await UserModel.findOne({
                         $or: [
                             { email: result.data.identifier },
                             { username: result.data.identifier }
                         ]
                     })
-                    // console.log(" credentials auth user ", user)
                     if (!user) {
                         throw new Error("No user found")
                     }
-
                     if (!user.isVerified) {
                         throw new Error("User not verified please sign up first")
                     }
@@ -42,33 +41,34 @@ export const authOption: NextAuthOptions = {
                     if (!isPasswordCorrect) {
                         throw new Error("Invalid credentials")
                     }
-
                     return user
-                } catch (error) {
-                    console.log(" credentials auth error in sign in ", error)
-                    return null
+                } catch (error: any) {
+                    
+                    throw new Error(error)
                 }
             }
         })
     ],
     callbacks: {
         async jwt({ token, user }) {
-            if (!user) {
-                throw new Error("No user found")
-            }
-            token.id = user._id.toString()
+            if (user) { 
+            token._id = user._id?.toString()
             token.isVerified = user.isVerified
             token.isAcceptingMessage = user.isAcceptingMessage
             token.email = user.email
             token.username = user.username
+            }
             return token
+
         },
         async session({ session, token }) {
-            session.user._id = token._id
-            session.user.isVerified = token.isVerified
-            session.user.isAcceptingMessage = token.isAcceptingMessage
-            session.user.email = token.email
-            session.user.username = token.username
+            if (token) {
+                session.user._id = token._id
+                session.user.isVerified = token.isVerified
+                session.user.isAcceptingMessage = token.isAcceptingMessage
+                session.user.email = token.email
+                session.user.username = token.username
+            }
             return session
         },
     },

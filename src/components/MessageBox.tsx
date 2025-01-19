@@ -1,10 +1,13 @@
 "use client"
 import {
     Card,
+    CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { format } from 'date-fns';
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -32,7 +35,7 @@ const MessageBox = ({ message, onMessageDelete }: messageProps) => {
 
     const handleDelete = async () => {
         try {
-            const response = await axios.delete<ApiResponse>(`/api/messages/${message._id}`)
+            const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`)
             toast({
                 title: response.data.message
             })
@@ -48,30 +51,40 @@ const MessageBox = ({ message, onMessageDelete }: messageProps) => {
 
     return (
 
-        <Card>
+        <Card className="card-bordered">
             <CardHeader>
-                <CardTitle></CardTitle>
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button variant="outline"><X className="h-4 w-4" /></Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                This action cannot be undone. This will permanently delete your
-                                account and remove your data from our servers.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-                <CardDescription>Card Description</CardDescription>
+                <div className="flex justify-between items-center">
+                    <CardTitle>{message.content}</CardTitle>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button className="h-8 w-8 p-0">
+                                <X className="w-5 h-5" />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete
+                                    this message.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>
+                                    Cancel
+                                </AlertDialogCancel>
+                                <AlertDialogAction onClick={handleDelete}>
+                                    Continue
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                </div>
+                <div className="text-sm">
+                {format(message.createdAt, 'MMMM do, yyyy h:mm:ss a')}
+                </div>
             </CardHeader>
-
+            <CardContent></CardContent>
         </Card>
 
     )

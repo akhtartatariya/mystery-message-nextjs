@@ -6,9 +6,9 @@ import { messageSchema } from "@/zodSchemas/messageSchema";
 export async function POST(request: Request) {
     await dbConnect()
     try {
-        const { username, message } = await request.json();
+        const { username, content } = await request.json();
 
-        const result = messageSchema.safeParse({content: message})
+        const result = messageSchema.safeParse({content})
 
         if (!result.success) {
             return Response.json({
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
             })
         }
         const newMessage = {
-            content: message,
+            content,
             createdAt: new Date()
         } as Message
         existedUser.messages.push(newMessage)

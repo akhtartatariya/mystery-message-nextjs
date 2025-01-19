@@ -4,8 +4,7 @@
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { signUpSchema } from "@/zodSchemas/signUpSchema"
-import axios, { AxiosError } from "axios"
+import  { AxiosError } from "axios"
 import { z } from "zod"
 import ApiResponse from "@/types/ApiResponse"
 import { useToast } from "@/hooks/use-toast"
@@ -39,14 +38,16 @@ const SignUp = () => {
         password: data.password,
         redirect: false
       })
+      console.log(" response->", response)
       if (response?.error) {
         toast({
           title: "Error",
           description: response.error
         })
       }
-      if (response?.ok) {
-        router.push("/")
+      
+      if(response?.url){
+        router.push('/')
       }
     } catch (err) {
       const axiosError = err as AxiosError<ApiResponse>
