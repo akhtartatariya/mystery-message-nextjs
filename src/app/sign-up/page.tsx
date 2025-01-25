@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useDebounceCallback  } from 'usehooks-ts'
+import { useDebounceCallback } from 'usehooks-ts'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { signUpSchema } from "@/zodSchemas/signUpSchema"
@@ -24,7 +24,7 @@ const SignUp = () => {
     const { toast } = useToast()
 
     const router = useRouter()
-    const debounced =  useDebounceCallback(setUsername, 1000)
+    const debounced = useDebounceCallback(setUsername, 1000)
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
@@ -110,11 +110,11 @@ const SignUp = () => {
                                 <FormItem>
                                     <FormLabel>Username</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="John Doe" {...field} 
-                                        onChange={(e) => {
-                                            field.onChange(e)
-                                            debounced(e.target.value)
-                                        }} />
+                                        <Input placeholder="John Doe" {...field}
+                                            onChange={(e) => {
+                                                field.onChange(e)
+                                                debounced(e.target.value)
+                                            }} />
                                     </FormControl>
                                     {usernameCheckingLoader && (
                                         <Loader2 className="w-5 h-5 animate-spin" />

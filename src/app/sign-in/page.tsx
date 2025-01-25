@@ -38,7 +38,6 @@ const SignUp = () => {
         password: data.password,
         redirect: false
       })
-      console.log(" response->", response)
       if (response?.error) {
         toast({
           title: "Error",

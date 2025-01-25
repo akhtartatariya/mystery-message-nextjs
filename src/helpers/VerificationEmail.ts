@@ -9,10 +9,8 @@ interface emailOptions {
     html: any  
 }
 async function sendEmail({ username, verifyCode, email }: any): Promise<ApiResponse> {
-    console.log(" Sending Email to",transport)
     try {
         
-        console.log(" in try Sending Email to",transport)
         const emailHtml = await render(VerificationEmail({ username, otp: verifyCode }));
         const emailOptions: emailOptions = {
             from: 'Mystery Message ',
@@ -22,7 +20,6 @@ async function sendEmail({ username, verifyCode, email }: any): Promise<ApiRespo
         }
 
         const emailResponse = await transport.sendMail(emailOptions);
-        console.log("emailResponse",emailResponse)
         return {
             success: true,
             message: 'Email sent successfully'

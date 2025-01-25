@@ -8,7 +8,6 @@ export async function POST(request: Request) {
     try {
         const { username, verifyCode } = await request.json()
         const result = verifyCodeSchema.safeParse({ code: verifyCode })
-        console.log(" verify result", result.data)
         const user = await UserModel.findOne({ username })
         if (!user) {
             return Response.json({

@@ -74,7 +74,13 @@ export async function POST(request: Request) {
             message: "User Verified Successfully please check your email"
         }, { status: 201 })
 
-    } catch (error) {
+    } catch (error: any) {
         console.log(" unable to create user", error)
+        return Response.json({
+            success: false,
+            message: error.message
+        }, {
+            status: 500
+        })
     }
 }

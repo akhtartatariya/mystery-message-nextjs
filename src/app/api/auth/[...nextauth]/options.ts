@@ -17,7 +17,6 @@ export const authOption: NextAuthOptions = {
             async authorize(credentials: any): Promise<any> {
                 await dbConnect()
                 try {
-                    // console.log(" credentials ->", credentials)
                     const result = signInSchema.safeParse({ identifier: credentials.identifier, password: credentials.password })
                     if (!result.success) {
                         throw new Error(result.error.errors[0].message)

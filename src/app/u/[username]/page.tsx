@@ -22,10 +22,10 @@ const page = () => {
     const [isSuggestingMessage, setIsSuggestingMessage] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
-    const { register, handleSubmit, setValue } = useForm< z.infer<typeof messageSchema>>({
+    const { register, handleSubmit, setValue } = useForm<z.infer<typeof messageSchema>>({
     })
-        const sendMessage = async (data: z.infer<typeof messageSchema>) => {
-            
+    const sendMessage = async (data: z.infer<typeof messageSchema>) => {
+
         try {
             setIsSubmitting(true)
             setErrorMessage(null)
@@ -55,7 +55,7 @@ const page = () => {
         }
         finally {
             setIsSubmitting(false)
-            
+
         }
     }
 
@@ -99,7 +99,7 @@ const page = () => {
             <p className=' text-left mt-4 font-medium text-sm'>Send Anonymous Message to {username}</p>
             <form className="grid w-full gap-2 mt-2 " onSubmit={handleSubmit(sendMessage)}>
                 <Textarea placeholder="Type your message here." className=' resize-none' {...register('content')} />
-                {errorMessage && <p className='text-red-500 text-sm'>{errorMessage}</p>} 
+                {errorMessage && <p className='text-red-500 text-sm'>{errorMessage}</p>}
                 <Button type='submit' className='w-40 mx-auto' disabled={isSubmitting}>Send message</Button>
             </form>
             <Button className='mt-20 w-40' onClick={suggestMessages} disabled={isSuggestingMessage}>{isSuggestingMessage ? (isSuggestingMessage && <Loader2 className='animate-spin mx-auto' />) : "Suggest Messages"}</Button>

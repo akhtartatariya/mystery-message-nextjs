@@ -27,7 +27,6 @@ export async function GET() {
             { $sort: { "messages.createdAt": -1 } },
             { $group: { _id: "$_id", messages: { $push: "$messages" } } }
         ])
-        console.log(" existedUser->",existedUser)
         if (!existedUser) {
             return Response.json({
                 success: false,
@@ -36,16 +35,6 @@ export async function GET() {
                 status: 404
             })
         }
-        // if(existedUser.length == 0){
-        //     return Response.json({
-        //         success: true,
-        //         message: "No messages found",
-        //         messages: []
-
-        //     }, {
-        //         status: 200
-        //     })
-        // }
         return Response.json({
             success: true,
             messages: existedUser.length == 0 ? [] : existedUser[0].messages
