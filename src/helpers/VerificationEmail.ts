@@ -19,7 +19,7 @@ async function sendEmail({ username, verifyCode, email }: any): Promise<ApiRespo
             html: emailHtml
         }
 
-        const emailResponse = await transport.sendMail(emailOptions);
+        await transport.sendMail(emailOptions);
         return {
             success: true,
             message: 'Email sent successfully'
