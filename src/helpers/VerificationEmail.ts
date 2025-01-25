@@ -15,14 +15,14 @@ async function sendEmail({ username, verifyCode, email }: any): Promise<ApiRespo
         console.log(" in try Sending Email to",transport)
         const emailHtml = await render(VerificationEmail({ username, otp: verifyCode }));
         const emailOptions: emailOptions = {
-            from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
+            from: 'Mystery Message ',
             to: email,
             subject: "Verification Code",
             html: emailHtml
         }
 
-        await transport.sendMail(emailOptions);
-
+        const emailResponse = await transport.sendMail(emailOptions);
+        console.log("emailResponse",emailResponse)
         return {
             success: true,
             message: 'Email sent successfully'
