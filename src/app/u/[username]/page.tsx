@@ -6,7 +6,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import ApiResponse from '@/types/ApiResponse'
 import { messageSchema } from '@/zodSchemas/messageSchema'
-import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
@@ -15,7 +14,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-const page = () => {
+const SendMessage = () => {
     const { username } = useParams()
     const { toast } = useToast()
     const [suggestMessage, setSuggestMessage] = useState<string[]>([])
@@ -119,4 +118,4 @@ const page = () => {
     )
 }
 
-export default page
+export default SendMessage

@@ -1,5 +1,4 @@
 "use client"
-
 import MessageBox from "@/components/MessageBox"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -12,13 +11,13 @@ import { Loader2, RefreshCcw } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-const page = () => {
+const Dashboard = () => {
     const { data: session } = useSession()
     const [messages, setMessages] = useState<Message[]>([])
     const [isToggleLoading, setIsToggleLoading] = useState(false)
     const [isMessageLoading, setIsMessageLoading] = useState(false)
     const { toast } = useToast()
-    const { register, handleSubmit, setValue, watch } = useForm()
+    const { register, setValue, watch } = useForm()
     const acceptMessage = watch('acceptMessage')
     const handleMessageDelete = (messageId: Message["_id"]) => {
         setMessages(messages.filter((message) => (
@@ -182,4 +181,4 @@ const page = () => {
     );
 }
 
-export default page
+export default Dashboard
