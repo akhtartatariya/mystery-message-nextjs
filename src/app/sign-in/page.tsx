@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { AxiosError } from "axios"
@@ -14,14 +14,14 @@ import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import Link from "next/link"
 import { signInSchema } from "@/zodSchemas/signInSchema"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 const SignUp = () => {
   const [isFormSubmit, setIsFormSubmit] = useState(false)
   const { toast } = useToast()
-
+  const { data: session, status } = useSession()
   const router = useRouter()
-  
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -48,9 +48,6 @@ const SignUp = () => {
       if (response?.status === 200) {
         router.push('/dashboard')
       }
-      else{
-        router.push('/')
-      }
     } catch (err) {
       const axiosError = err as AxiosError<ApiResponse>
       toast({
@@ -61,7 +58,11 @@ const SignUp = () => {
       setIsFormSubmit(false)
     }
   }
-
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push('/dashboard')
+    }
+  }, [status, router])
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-800">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
