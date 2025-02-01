@@ -46,7 +46,8 @@ const SignUp = () => {
       }
       console.log("response",response)
       if(response?.url){
-        router.push('/dashboard')
+        // router.push('/dashboard')
+        router.replace('/dashboard')
       }
     } catch (err) {
       const axiosError = err as AxiosError<ApiResponse>
