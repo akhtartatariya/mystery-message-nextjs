@@ -37,7 +37,6 @@ const SignUp = () => {
         identifier: data.identifier,
         password: data.password,
         redirect: false,
-        callbackUrl: "/dashboard",
       })
       if (response?.error) {
         toast({
@@ -46,8 +45,11 @@ const SignUp = () => {
         })
       }
       console.log("response", response)
-      if (response?.url) {
+      if (response?.status === 200) {
         router.push('/dashboard')
+      }
+      else{
+        router.push('/')
       }
     } catch (err) {
       const axiosError = err as AxiosError<ApiResponse>
