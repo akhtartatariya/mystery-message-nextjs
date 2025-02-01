@@ -36,7 +36,8 @@ const SignUp = () => {
       const response = await signIn("credentials", {
         identifier: data.identifier,
         password: data.password,
-        redirect: false,
+        // redirect: false,
+        callbackUrl: "/dashboard",
       })
       if (response?.error) {
         toast({
@@ -44,9 +45,11 @@ const SignUp = () => {
           description: response.error
         })
       }
-      console.log("response", response)
       if (response?.status === 200) {
-        router.push('/dashboard')
+        router.push(response?.url || '/dashboard')
+      }
+      else{
+        console.error("Error",response)
       }
     } catch (err) {
       const axiosError = err as AxiosError<ApiResponse>
@@ -58,11 +61,11 @@ const SignUp = () => {
       setIsFormSubmit(false)
     }
   }
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push('/dashboard')
-    }
-  }, [status, router,session])
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     router.push('/dashboard')
+  //   }
+  // }, [status, router, session])
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-800">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">

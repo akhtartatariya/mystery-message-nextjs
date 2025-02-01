@@ -112,7 +112,6 @@ const Dashboard = () => {
     let profileUrl = ''
         if (typeof window !== "undefined") {
             const baseUrl = `${window?.location.protocol}//${window.location.host}`
-            console.log(" baseUrl",baseUrl)
             profileUrl = `${baseUrl}/u/${session?.user.username}`
         }
     const copyToClipboard = () => {
