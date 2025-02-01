@@ -15,8 +15,7 @@ import { Loader2 } from "lucide-react"
 import Link from "next/link"
 import { signInSchema } from "@/zodSchemas/signInSchema"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/router"
-
+import { useRouter } from "next/navigation"
 const SignUp = () => {
   const [isFormSubmit, setIsFormSubmit] = useState(false)
   const { toast } = useToast()
