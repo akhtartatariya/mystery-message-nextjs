@@ -109,8 +109,11 @@ const Dashboard = () => {
         getToggleStatus()
         getMessages()
     }, [getMessages, setMessages, session, setValue])
-    const baseUrl = `${window?.location.protocol}//${window.location.host}`
-    const profileUrl = `${baseUrl}/u/${session?.user.username}`
+    let profileUrl = ''
+        if (typeof window !== "undefined") {
+            const baseUrl = `${window?.location.protocol}//${window.location.host}`
+            profileUrl = `${baseUrl}/u/${session?.user.username}`
+        }
     const copyToClipboard = () => {
         navigator.clipboard.writeText(profileUrl)
         toast({
@@ -121,7 +124,7 @@ const Dashboard = () => {
     if (!session || !session.user) return <> <div className="text-red-500 text-center my-8" > Please login first</div></>
 
     return (
-        <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+        <div className="my-8 mx-4 md:mx-8 lg:mx-auto py-6 bg-white rounded w-full max-w-6xl">
             <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
 
             <div className="mb-4">

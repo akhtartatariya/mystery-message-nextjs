@@ -56,17 +56,17 @@ export const authOption: NextAuthOptions = {
             token.isAcceptingMessage = user.isAcceptingMessage
             token.email = user.email
             token.username = user.username
-            }
-            return token
-
-        },
-        async session({ session, token }) {
-            if (token) {
-                session.user._id = token._id
-                session.user.isVerified = token.isVerified
-                session.user.isAcceptingMessage = token.isAcceptingMessage
-                session.user.email = token.email
-                session.user.username = token.username
+        }
+        return token
+        
+    },
+    async session({ session, token }) {
+        if (token) {
+            session.user._id = token._id
+            session.user.isVerified = token.isVerified
+            session.user.isAcceptingMessage = token.isAcceptingMessage
+            session.user.email = token.email
+            session.user.username = token.username
             }
             return session
         },

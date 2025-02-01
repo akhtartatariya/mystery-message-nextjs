@@ -44,7 +44,7 @@ const SignUp = () => {
           description: response.error
         })
       }
-      
+      console.log("response",response)
       if(response?.url){
         router.push('/dashboard')
       }
