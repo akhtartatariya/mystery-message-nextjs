@@ -109,8 +109,8 @@ const Dashboard = () => {
         getToggleStatus()
         getMessages()
     }, [getMessages, setMessages, session, setValue])
-    // let profileUrl = ''
-    const profileUrl = `${process.env.NEXT_URL}/u/${session?.user.username}`
+    let baseUrl = process.env.NEXT_URL || 'https://mystery-message-nextjs.vercel.app'
+    const profileUrl = `${baseUrl}/u/${session?.user.username}`
     const copyToClipboard = () => {
         navigator.clipboard.writeText(profileUrl)
         toast({
