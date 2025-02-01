@@ -36,7 +36,8 @@ const SignUp = () => {
       const response = await signIn("credentials", {
         identifier: data.identifier,
         password: data.password,
-        redirect: false
+        redirect: false,
+        callbackUrl: "/dashboard",
       })
       if (response?.error) {
         toast({
